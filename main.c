@@ -17,7 +17,7 @@ void menu(void){
             FILE *f = fopen("notes.dat", "ab");
             if(f == NULL){
                 printf("File cannot be opened!\n");
-                return;
+                continue;
             }
             fwrite(note, sizeof(char), 100, f);
             fclose(f);
@@ -28,7 +28,7 @@ void menu(void){
             FILE *f = fopen("notes.dat", "rb");
             if(f == NULL){
                 printf("File does not exist!\n");
-                return;
+                continue;
             }
             char temp[100];
             while(fread(temp, sizeof(char), 100, f)){
@@ -38,7 +38,7 @@ void menu(void){
             }
             fclose(f);
         } else if(a==3){
-            printf("Notes are closing.");
+            printf("Notes are closing.\n");
             break;
         } else if(a==4){
             char temp[100];
@@ -47,11 +47,15 @@ void menu(void){
             int del;
             printf("Enter note number to delete: ");
             scanf("%d", &del);
+            if(del <= 0){
+                printf("Unvalid Number!\n");
+                continue;
+            }
             FILE *f = fopen("notes.dat", "rb");
             FILE *tempFile = fopen("temp.dat", "wb");
             if(f == NULL || tempFile == NULL){
                 printf("File Error!\n");
-                return;
+                continue;
             }
             while(fread(temp, sizeof(char), 100, f)){
                 if(i != del){
@@ -65,9 +69,10 @@ void menu(void){
             rename("temp.dat", "notes.dat");
             printf("Note %d deleted!\n", del);
         }else{
-            printf("Enter a valid choise!");
+            printf("Enter a valid choise!\n");
         }
     }
+    
 }
 int main(void) {
     menu();
